@@ -1,0 +1,100 @@
+backbone:
+  activation: relu
+  channels: 3
+  decoder_kernals: null
+  decoder_output_paddings: null
+  decoder_strides: null
+  decoders: null
+  encoders:
+  - resnet18
+  - resnet18
+  - resnet18
+  fc_identity: true
+  first_norm: false
+  init_method: xavier
+  input_shapes:
+  - - 3
+    - 224
+    - 224
+  # - - 3
+  #   - 224
+  #   - 224
+  # - - 3
+  #   - 224
+  #   - 224
+  kernals: null
+  max_pooling: false
+  shared: true
+  type: cnn
+cluster_module:
+  cluster_hidden_dim: 128
+  enable: true
+  num_cluster: 100
+  type: ddc
+contrastive:
+  cls_enable: true
+  cls_lambda: 0.5
+  con_lambda: 0.0051
+  ds_iters: 3
+  enable: true
+  eps: 0.05
+  ins_enable: true
+  ins_lambda: 0.5
+  nmb_protos: 256
+  prediction_hidden_dim: 512
+  projection_dim: 128
+  projection_hidden_dim: 1024
+  projection_layers: 3
+  symmetry: false
+  temperature: 0.5
+  type: simclr
+dataset:
+  imsize: 224
+  name: coil-100
+  split: true
+device: 1
+experiment: cloven
+experiment_id: 2
+fusion:
+  activation: relu
+  aggregate: mean
+  attn_ffn_dim: 1024
+  batch_first: true
+  enable_pos: true
+  nhead: 1
+  norm_first: false
+  num_layers: 2
+  type: resfus
+  use_bn: true
+gpu: true
+hidden_dim: 512
+inference:
+  cca_return_h1: true
+model_name: cloven
+note: using resnet18, contrastive instance and clustering, residual fusion bs 64
+seed: 0
+task:
+- clustering
+- classification
+test_time: 10
+train:
+  batch_size: 128
+  enable_auto_weight: false
+  epochs: 100
+  evaluate: 1
+  fp16: true
+  log_dir: ./experiments/results/cloven/clustering/coil-100/eid-2/
+  lr: 0.001
+  lr_scheduler: cosine
+  mean_decay_param: 1.0
+  mean_sort: full
+  missing_ratio: 0.0
+  num_workers: 1
+  opt_level: O1
+  optim: adam
+  reconstruction: false
+  save_embeddings: -1
+  save_log: true
+  with_gt: false
+verbose: true
+views: 3
