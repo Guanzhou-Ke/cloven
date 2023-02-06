@@ -1,8 +1,8 @@
 # A Clustering-guided Contrastive Fusion for Multi-view Representation Learning
 The official repos. for "A Clustering-guided Contrastive Fusion for Multi-view Representation Learning".
 
-- Submitted at: IEEE Transaction on Image Process
-- Status: Submitted.
+- Submitted at: IEEE Transactions on Circuits and Systems for Video Technology (TCSVT)
+- Status: Under Review.
 
 
 ## Dataset
