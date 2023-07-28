@@ -185,7 +185,8 @@ def get_cfg(args):
     """
     config = get_cfg_defaults()
     config.merge_from_file(args.file)
-    config.task = config.task.split('|') if config.task else ['clustering', 'classification']
+    if isinstance(config.task, str):
+        config.task = config.task.split('|') if config.task else ['clustering', 'classification']
     config.model_name = config.experiment
     
     if not config.train.log_dir:

@@ -2,7 +2,9 @@
 The official repos. for "A Clustering-guided Contrastive Fusion for Multi-view Representation Learning".
 
 - Submitted at: IEEE Transactions on Circuits and Systems for Video Technology (TCSVT)
-- Status: Under Review.
+- Status: Accepted.
+
+Note: `main.py` and `trainer.py` has uploaded into the repos.
 
 
 ## Dataset
@@ -40,7 +42,7 @@ Our original model placed at `src/experiments/algorithms/cloven.py`.
 Train the model by running following command:
 
 ```
-python main.py -f <path to your config>
+python main.py -f <path to your config> -e cloven
 ```
 
 The `main.py` could automatically find the model class and dataset that defined in config file.
