@@ -28,7 +28,8 @@ from utils import (clustering_by_representation,
                    seed_everything,
                    print_network,
                    get_masked)
-from vis_result import vis_hidden4training
+# remove the local test function. Just use for recording the changing of latent represnetations during training.
+# from vis_result import vis_hidden4training
 from optimizer import get_optimizer, get_lr_scheduler
 
 
@@ -94,8 +95,8 @@ class Trainer:
                 if self.valid_loader and (epoch % self.evaluate_intervals == 0):
                     self.evaluate(epoch)
                 # Save embeddings.
-                if self.save_embeddings != -1 and epoch % self.save_embeddings == 0:
-                    self.record_embedding(epoch)
+                # if self.save_embeddings != -1 and epoch % self.save_embeddings == 0:
+                #     self.record_embedding(epoch)
                 # Adjust learning rate.
                 self.scheduler.step()
                 self.writer.add_scalar('lr', self.scheduler.get_last_lr()[
@@ -359,24 +360,25 @@ class Trainer:
             total_top1 = (total_top1 / total_num) * 100
             total_top5 = (total_top5 / total_num) * 100
             wandb.log({"knn_acc@1": total_top1, "knn_acc@5": total_top5}, step=epoch)
-
-    def record_embedding(self, epoch):
-        with torch.no_grad():
-            self.model.eval()
-            x1, x2 = self.tiny_dataset['x1'], self.tiny_dataset['x2']
-            x1, x2 = x1.to(self.device), x2.to(self.device)
-            hs, z = self.model.extract_all_hidden([x1, x2])
-            hs = [h.detach().cpu() for h in hs]
-            z = z.detach().cpu()
-            if epoch % 5 == 0:
-                # For reduce the storage pressure, decide to set a constant value 5 to save embedding.
-                self.embeddings[f'hidden_hs_{epoch}'] = hs
-                self.embeddings[f'hidden_z_{epoch}'] = z
-            # add figure to tensorboard.
-            self.writer.add_figure("latent-vis",
-                                   vis_hidden4training(
-                                       hs[0], hs[1], self.tiny_labels, z),
-                                   global_step=epoch)
+            
+    # For local test.
+    # def record_embedding(self, epoch):
+    #     with torch.no_grad():
+    #         self.model.eval()
+    #         x1, x2 = self.tiny_dataset['x1'], self.tiny_dataset['x2']
+    #         x1, x2 = x1.to(self.device), x2.to(self.device)
+    #         hs, z = self.model.extract_all_hidden([x1, x2])
+    #         hs = [h.detach().cpu() for h in hs]
+    #         z = z.detach().cpu()
+    #         if epoch % 5 == 0:
+    #             # For reduce the storage pressure, decide to set a constant value 5 to save embedding.
+    #             self.embeddings[f'hidden_hs_{epoch}'] = hs
+    #             self.embeddings[f'hidden_z_{epoch}'] = z
+    #         # add figure to tensorboard.
+    #         self.writer.add_figure("latent-vis",
+    #                                vis_hidden4training(
+    #                                    hs[0], hs[1], self.tiny_labels, z),
+    #                                global_step=epoch)
 
     def finish_a_train(self):
         self.seed = torch.randint(5000, (1, )).item()
